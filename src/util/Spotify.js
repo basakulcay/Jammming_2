@@ -1,5 +1,5 @@
-const clientId = '94c3bfdc768b4ac2888e8a44dab33c31';
-const redirectUri = 'http://afraid-brothers.surge.sh';
+const clientId = '411655ad9f7b4ec7b257c2ea1fcf9633';
+const redirectUri = 'http://localhost:3000/';
 
 let accessToken;
 const Spotify = {
