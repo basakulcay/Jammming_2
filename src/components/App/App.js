@@ -73,7 +73,7 @@ class App extends React.Component {
               onNameChange={this.updatePlaylistName}
               onSave={this.savePlaylist}
             />
-            <SpotifyPlaylist />
+            <SpotifyPlaylist onSearch={this.search} />
           </div>
         </div>
       </div>
