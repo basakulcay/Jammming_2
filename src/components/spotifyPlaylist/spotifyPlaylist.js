@@ -1,13 +1,13 @@
 import React from 'react';
-import './spotifyPlaylist.css';
+import './SpotifyPlaylist.css';
 
-export class spotifyPlaylist extends React.Component {
+export class SpotifyPlaylist extends React.Component {
   render() {
     return (
-      <div className="spotifyPlaylist">
+      <div className="SpotifyPlaylist">
         <input defaultValue="Existing Playlist" />
-        <p>deneme</p>
       </div>
     );
   }
 }
+
