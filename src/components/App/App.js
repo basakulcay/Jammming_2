@@ -13,12 +13,14 @@ class App extends React.Component {
       searchResults: [],
       playlistName: 'My Playlist',
       playlistTracks: [],
+      spotifyList: [],
     };
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
+    this.bringPlaylist = this.bringPlaylist.bind(this);
   }
 
   addTrack(track) {
@@ -53,6 +55,12 @@ class App extends React.Component {
     });
   }
 
+  bringPlaylist() {
+    Spotify.bringPlaylist().then((spotifyList) => {
+      this.setState({ spotifyList: spotifyList });
+    });
+  }
+
   render() {
     return (
       <div>
@@ -73,7 +81,10 @@ class App extends React.Component {
               onNameChange={this.updatePlaylistName}
               onSave={this.savePlaylist}
             />
-            <SpotifyPlaylist onSearch={this.search} />
+            <SpotifyPlaylist
+              onSearch={this.search}
+              spotifyList={this.state.spotifyList}
+            />
           </div>
         </div>
       </div>

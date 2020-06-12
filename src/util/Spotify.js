@@ -1,5 +1,5 @@
 const clientId = '411655ad9f7b4ec7b257c2ea1fcf9633';
-const redirectUri = 'http://localhost:3000/';
+const redirectUri = 'http://localhost:3000/callback/';
 
 let accessToken;
 const Spotify = {
@@ -14,7 +14,7 @@ const Spotify = {
       accessToken = accessTokenMatch[1];
       let expiresIn = Number(expiresInMatch[1]);
       //This clears the parameters, allowing to grab new access token then it expires
-      window.setTimeout(() => (accessToken = ''), expiresIn * 1000);
+      window.setTimeout(() => accessToken = '', expiresIn * 1000);
       window.history.pushState('Access Token', null, '/');
       return accessToken;
     } else {
@@ -43,6 +43,15 @@ const Spotify = {
         }));
       });
   },
+  //Added code to bring the user's spotify playlist
+  bringPlaylist(){
+    return fetch(`https://api.spotify.com/v1/me/playlists`)
+   .then(response=>{
+    if (response.ok) {return response.json()};
+    throw new Error('Request failed!');}
+    ,networkError=>{console.log(networkError.message);}).then(jsonResponse=>{return jsonResponse;})
+   }
+    ,
   savePlaylist(name, trackUris) {
     if (!name || !trackUris.length) {
       return;
