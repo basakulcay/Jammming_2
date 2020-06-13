@@ -20,7 +20,6 @@ class App extends React.Component {
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
-    this.bringPlaylist = this.bringPlaylist.bind(this);
   }
 
   addTrack(track) {
@@ -55,25 +54,30 @@ class App extends React.Component {
     });
   }
 
-  bringPlaylist() {
-    Spotify.bringPlaylist().then((spotifyList) => {
-      this.setState({ spotifyList: spotifyList });
-    });
+ componentDidMount() {
+    Spotify.bringPlaylist().then(spotifyList => {
+        this.setState({ spotifyList, loading: false});
+      },
+      error => {
+        this.setState({loading: false,error});
+      }
+    );
   }
 
   render() {
-    return (
+  const { error, loading } = this.state;
+  if (error) {return <div>Error: {error.message}</div>;}
+  else if (loading) {return <div>Loading...</div>;} 
+  else {
+   return (
       <div>
         <h1>
-          Ja<span className="highlight">mmm</span>ing
+        Ja<span className="highlight">mmm</span>ing
         </h1>
         <div className="App">
           <SearchBar onSearch={this.search} />
           <div className="App-playlist">
-            <SearchResults
-              onAdd={this.addTrack}
-              searchResults={this.state.searchResults}
-            />
+            <SearchResults onAdd={this.addTrack} searchResults={this.state.searchResults}/>
             <Playlist
               playlistName={this.state.playlistName}
               playlistTracks={this.state.playlistTracks}
@@ -89,7 +93,7 @@ class App extends React.Component {
         </div>
       </div>
     );
+  }}
   }
-}
 
 export default App;
