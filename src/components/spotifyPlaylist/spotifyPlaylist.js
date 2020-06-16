@@ -1,15 +1,17 @@
 import React from 'react';
-import './SpotifyPlaylist.css';
+import './spotifyPlaylist.css';
 
 
-export class SpotifyPlaylist extends React.Component {
+class SpotifyPlaylist extends React.Component {
   render() {
     return (
       <div className="SpotifyPlaylist">
         <input defaultValue="Existing Playlist" />
-        
+
       </div>
     );
   }
 }
 
+
+export default SpotifyPlaylist
