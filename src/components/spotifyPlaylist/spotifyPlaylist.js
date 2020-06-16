@@ -3,11 +3,20 @@ import './spotifyPlaylist.css';
 
 
 class SpotifyPlaylist extends React.Component {
+
+  componentDidMount() {
+    console.log("yay", this.props.spotifyList)
+  }
   render() {
     return (
       <div className="SpotifyPlaylist">
         <input defaultValue="Existing Playlist" />
+        <div>
 
+          {this.props.spotifyList.map((playlist) =>
+            <p>{playlist.items.href}</p>
+          )}
+        </div>
       </div>
     );
   }
