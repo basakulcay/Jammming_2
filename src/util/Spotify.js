@@ -47,12 +47,15 @@ const Spotify = {
   bringPlaylist() {
     const accessToken = Spotify.getAccessToken();
     const headers = { Authorization: `Bearer ${accessToken}` };
-    return fetch(`https://api.spotify.com/v1/me/playlists`,  { headers: headers })
+    return fetch(`https://api.spotify.com/v1/me/playlists`, { headers: headers })
       .then(response => {
-        if (response.ok) { return response.json() };
+        if (response.ok) {
+          console.log(response.json())
+          return response.json()
+        };
         throw new Error('Request failed!');
-      }, 
-      networkError => { console.log(networkError.message); }).then(jsonResponse => { return jsonResponse; })
+      },
+        networkError => { console.log(networkError.message); }).then(jsonResponse => { return jsonResponse; })
   }
   ,
   savePlaylist(name, trackUris) {
