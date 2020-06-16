@@ -14,7 +14,7 @@ class SpotifyPlaylist extends React.Component {
         <div>
 
           {this.props.spotifyList.map((playlist) =>
-            <p>{playlist.items.href}</p>
+            <p>{playlist.id}</p>
           )}
         </div>
       </div>

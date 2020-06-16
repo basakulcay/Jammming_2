@@ -58,11 +58,16 @@ const Spotify = {
     // })
 
     ///  this code is the same thing as above, but uses async await instead of .then() ///
-    const res = await axios.get('https://api.spotify.com/v1/playlists', {
+    try {
+      const res = await axios.get('https://api.spotify.com/v1/playlists', {
       headers: headers
     })
     console.log(res.data)
     return res.data
+    } catch (error) {
+      console.log('ERROR', error, error.response)
+    }
+    
 
     // return fetch('https://api.spotify.com/v1/playlists', { headers: headers }).then(res => {
     //   return res.json()
