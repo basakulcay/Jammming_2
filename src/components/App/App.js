@@ -7,20 +7,14 @@ import Spotify from '../../util/Spotify.js';
 import SpotifyPlaylist from '../spotifyPlaylist/spotifyPlaylist';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchResults: [],
-      playlistName: 'My Playlist',
-      playlistTracks: [],
-      spotifyList: [],
-    };
-    this.addTrack = this.addTrack.bind(this);
-    this.removeTrack = this.removeTrack.bind(this);
-    this.updatePlaylistName = this.updatePlaylistName.bind(this);
-    this.savePlaylist = this.savePlaylist.bind(this);
-    this.search = this.search.bind(this);
-  }
+
+  state = {
+    searchResults: [],
+    playlistName: 'My Playlist',
+    playlistTracks: [],
+    spotifyList: [],
+  };
+
 
   addTrack(track) {
     let tracks = this.state.playlistTracks;
@@ -54,10 +48,10 @@ class App extends React.Component {
     });
   }
 
-  componentDidMount() {
-    Spotify.bringPlaylist().then(spotifyList => {
-      console.log("state", spotifyList)
-      this.setState({ spotifyList, loading: false });
+  componentWillMount() {
+    Spotify.bringPlaylist().then(list => {
+      console.log("state", list)
+      this.setState({ spotifyList: list.items, loading: false });
     }
     ).catch(error => {
       this.setState({ loading: false, error });
