@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const clientId = '411655ad9f7b4ec7b257c2ea1fcf9633';
 const redirectUri = 'http://localhost:3000/callback/';
 
@@ -24,6 +26,7 @@ const Spotify = {
   },
   search(term) {
     const accessToken = Spotify.getAccessToken();
+   
     return fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     })
@@ -44,19 +47,32 @@ const Spotify = {
       });
   },
   //Added code to bring the user's spotify playlist
-  bringPlaylist() {
+  async bringPlaylist() {
     const accessToken = Spotify.getAccessToken();
     const headers = { Authorization: `Bearer ${accessToken}` };
 
-    return fetch('https://api.spotify.com/v1/playlists', { headers: headers }).then(res => {
-      return res.json()
-    }).then(data => {
-      console.log('respnse data', data)
-      return data
-    }).catch(err => {
-      console.log(err)
-      throw new Error('Request Failed')
+    //==== FOR YOUR LEARNING SAKE===//
+    // axios.get('https://api.spotify.com/v1/playlists',{headers:headers}).then(res => {
+    //   console.log(res.data)
+    // return res.data
+    // })
+
+    ///  this code is the same thing as above, but uses async await instead of .then() ///
+    const res = await axios.get('https://api.spotify.com/v1/playlists', {
+      headers: headers
     })
+    console.log(res.data)
+    return res.data
+
+    // return fetch('https://api.spotify.com/v1/playlists', { headers: headers }).then(res => {
+    //   return res.json()
+    // }).then(data => {
+    //   console.log('respnse data', data)
+    //   return data
+    // }).catch(err => {
+    //   console.log(err)
+    //   throw new Error('Request Failed')
+    // })
   }
   ,
   savePlaylist(name, trackUris) {
