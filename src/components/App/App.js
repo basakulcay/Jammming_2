@@ -4,7 +4,7 @@ import { SearchBar } from '../SearchBar/SearchBar';
 import { SearchResults } from '../SearchResults/SearchResults.js';
 import { Playlist } from '../Playlist/Playlist.js';
 import Spotify from '../../util/Spotify.js';
-import { SpotifyPlaylist } from '../spotifyPlaylist/SpotifyPlaylist';
+import SpotifyPlaylist from '../spotifyPlaylist/spotifyPlaylist';
 
 class App extends React.Component {
   constructor(props) {

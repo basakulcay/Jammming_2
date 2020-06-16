@@ -44,14 +44,17 @@ const Spotify = {
       });
   },
   //Added code to bring the user's spotify playlist
-  bringPlaylist(){
-    return fetch(`https://api.spotify.com/v1/me/playlists`)
-   .then(response=>{
-    if (response.ok) {return response.json()};
-    throw new Error('Request failed!');}
-    ,networkError=>{console.log(networkError.message);}).then(jsonResponse=>{return jsonResponse;})
-   }
-    ,
+  bringPlaylist() {
+    const accessToken = Spotify.getAccessToken();
+    const headers = { Authorization: `Bearer ${accessToken}` };
+    return fetch(`https://api.spotify.com/v1/me/playlists`,  { headers: headers })
+      .then(response => {
+        if (response.ok) { return response.json() };
+        throw new Error('Request failed!');
+      }, 
+      networkError => { console.log(networkError.message); }).then(jsonResponse => { return jsonResponse; })
+  }
+  ,
   savePlaylist(name, trackUris) {
     if (!name || !trackUris.length) {
       return;
