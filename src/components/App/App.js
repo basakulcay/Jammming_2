@@ -54,46 +54,47 @@ class App extends React.Component {
     });
   }
 
- componentDidMount() {
+  componentDidMount() {
     Spotify.bringPlaylist().then(spotifyList => {
-        this.setState({ spotifyList, loading: false});
-      },
-      error => {
-        this.setState({loading: false,error});
-      }
-    );
+      console.log("state", spotifyList)
+      this.setState({ spotifyList, loading: false });
+    }
+    ).catch(error => {
+      this.setState({ loading: false, error });
+    });
   }
 
   render() {
-  const { error, loading } = this.state;
-  if (error) {return <div>Error: {error.message}</div>;}
-  else if (loading) {return <div>Loading...</div>;} 
-  else {
-   return (
-      <div>
-        <h1>
-        Ja<span className="highlight">mmm</span>ing
+    const { error, loading } = this.state;
+    if (error) { return <div>Error: {error.message}</div>; }
+    else if (loading) { return <div>Loading...</div>; }
+    else {
+      return (
+        <div>
+          <h1>
+            Ja<span className="highlight">mmm</span>ing
         </h1>
-        <div className="App">
-          <SearchBar onSearch={this.search} />
-          <div className="App-playlist">
-            <SearchResults onAdd={this.addTrack} searchResults={this.state.searchResults}/>
-            <Playlist
-              playlistName={this.state.playlistName}
-              playlistTracks={this.state.playlistTracks}
-              onRemove={this.removeTrack}
-              onNameChange={this.updatePlaylistName}
-              onSave={this.savePlaylist}
-            />
-            <SpotifyPlaylist
-              onSearch={this.search}
-              spotifyList={this.state.spotifyList}
-            />
+          <div className="App">
+            <SearchBar onSearch={this.search} />
+            <div className="App-playlist">
+              <SearchResults onAdd={this.addTrack} searchResults={this.state.searchResults} />
+              <Playlist
+                playlistName={this.state.playlistName}
+                playlistTracks={this.state.playlistTracks}
+                onRemove={this.removeTrack}
+                onNameChange={this.updatePlaylistName}
+                onSave={this.savePlaylist}
+              />
+              <SpotifyPlaylist
+                onSearch={this.search}
+                spotifyList={this.state.spotifyList}
+              />
+            </div>
           </div>
         </div>
-      </div>
-    );
-  }}
+      );
+    }
   }
+}
 
 export default App;
