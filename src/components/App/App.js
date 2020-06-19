@@ -5,6 +5,7 @@ import { SearchResults } from '../SearchResults/SearchResults.js';
 import { Playlist } from '../Playlist/Playlist.js';
 import Spotify from '../../util/Spotify.js';
 import SpotifyPlaylist from '../spotifyPlaylist/spotifyPlaylist';
+import PlaylistTracks from '../PlaylistTracks/PlaylistTracks'
 
 class App extends React.Component {
 
@@ -13,10 +14,11 @@ class App extends React.Component {
     playlistName: 'My Playlist',
     playlistTracks: [],
     spotifyList: [],
+    selectedPlaylistTracks:[]
   };
 
 
-  addTrack(track) {
+  addTrack =(track) => {
     let tracks = this.state.playlistTracks;
     if (tracks.find((savedTracks) => savedTracks.id === track.id)) {
       return;
@@ -25,30 +27,37 @@ class App extends React.Component {
     this.setState({ playlistTracks: tracks });
   }
 
-  removeTrack(track) {
+  removeTrack= (track) => {
     let tracks = this.state.playlistTracks;
     tracks = tracks.filter((currentTrack) => currentTrack.id !== track.id);
     this.setState({ playlistTracks: tracks });
   }
 
-  updatePlaylistName(name) {
+  updatePlaylistName= (name) => {
     this.setState({ playlistName: name });
   }
 
-  savePlaylist() {
+  savePlaylist=()=> {
     const trackUris = this.state.playlistTracks.map((track) => track.uri);
     Spotify.savePlaylist(this.state.playlistName, trackUris).then(() => {
       this.setState({ playlistName: 'New Playlist', playlistTracks: [] });
     });
   }
 
-  search(term) {
+  search=(term)=> {
     Spotify.search(term).then((searchResults) => {
       this.setState({ searchResults: searchResults });
     });
   }
 
-  componentWillMount() {
+  selectPlaylist=(id)=>{
+    Spotify.getPlaylist(id).tracks.then((playlistName)=>
+    {this.setState({ playlistName: playlistName })});
+    //retrive the tracks of selected playlist
+    //update the state of the retrived playlist
+  }
+
+  componentWillMount=() => {
     Spotify.bringPlaylist().then(list => {
       console.log("state", list)
       this.setState({ spotifyList: list.items, loading: false });
@@ -80,9 +89,10 @@ class App extends React.Component {
                 onSave={this.savePlaylist}
               />
               <SpotifyPlaylist
-                onSearch={this.search}
                 spotifyList={this.state.spotifyList}
+                selectPlaylist={this.state.selectPlaylist}
               />
+              <PlaylistTracks onSelect={this.selectPlaylist} selectedPlaylistTracks= {this.selectedPlaylistTracks}/>
             </div>
           </div>
         </div>
