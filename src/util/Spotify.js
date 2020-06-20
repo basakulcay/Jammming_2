@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
-const clientId = '411655ad9f7b4ec7b257c2ea1fcf9633';
-const redirectUri = 'http://localhost:3000/callback/';
+const clientId = "411655ad9f7b4ec7b257c2ea1fcf9633";
+const redirectUri = "http://localhost:3000/callback/";
 
 let accessToken;
 const Spotify = {
@@ -16,8 +16,8 @@ const Spotify = {
       accessToken = accessTokenMatch[1];
       let expiresIn = Number(expiresInMatch[1]);
       //This clears the parameters, allowing to grab new access token then it expires
-      window.setTimeout(() => (accessToken = ''), expiresIn * 1000);
-      window.history.pushState('Access Token', null, '/');
+      window.setTimeout(() => (accessToken = ""), expiresIn * 1000);
+      window.history.pushState("Access Token", null, "/");
       return accessToken;
     } else {
       const accessUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectUri}`;
@@ -47,30 +47,32 @@ const Spotify = {
       });
   },
 
-  async getPlaylist(id){
-    let userID;
-    let playlist_id;
+  async getPlaylistTracks(id) {
     const accessToken = Spotify.getAccessToken();
     const headers = { Authorization: `Bearer ${accessToken}` };
-    try {const res =  await axios.get(`https://api.spotify.com/v1/users/${userID}/playlists/${playlist_id}/tracks`, 
-        {headers: headers});
-      console.log(res.data);
-      return res.data;} 
-    catch (error) {
-      console.log('ERROR', error, error.response);
-  }},
+    try {
+      const res = await axios.get(
+        `https://api.spotify.com/v1/me/playlists/${id}/tracks`,
+        { headers: headers },
+      );
+      console.log("This is the playlist tracks", res.data);
+      return res.data;
+    } catch (error) {
+      console.log("ERROR", error.response);
+    }
+  },
   //Added code to bring the user's spotify playlist
   async bringPlaylist() {
     const accessToken = Spotify.getAccessToken();
     const headers = { Authorization: `Bearer ${accessToken}` };
     try {
-      const res = await axios.get('https://api.spotify.com/v1/me/playlists', {
+      const res = await axios.get("https://api.spotify.com/v1/me/playlists", {
         headers: headers,
       });
       console.log(res.data);
       return res.data;
     } catch (error) {
-      console.log('ERROR', error, error.response);
+      console.log("ERROR", error, error.response);
     }
   },
   savePlaylist(name, trackUris) {
@@ -80,29 +82,23 @@ const Spotify = {
 
     const accessToken = Spotify.getAccessToken();
     const headers = { Authorization: `Bearer ${accessToken}` };
-   
 
-    return fetch('https://api.spotify.com/v1/me', { headers: headers })
+    return fetch(`https://api.spotify.com/v1/me/playlists`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({ name: name }),
+    })
       .then((response) => response.json())
       .then((jsonResponse) => {
-        
-        return fetch(`https://api.spotify.com/v1/me/playlists`, {
-          method: 'POST',
-          headers: headers,
-          body: JSON.stringify({ name: name }),
-        })
-          .then((response) => response.json())
-          .then((jsonResponse) => {
-            const playlistID = jsonResponse.id;
-            return fetch(
-              `https://api.spotify.com/v1/me/playlists/${playlistID}/tracks`,
-              {
-                method: 'POST',
-                headers: headers,
-                body: JSON.stringify({ uris: trackUris }),
-              }
-            );
-          });
+        const playlistID = jsonResponse.id;
+        return fetch(
+          `https://api.spotify.com/v1/me/playlists/${playlistID}/tracks`,
+          {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify({ uris: trackUris }),
+          },
+        );
       });
   }, // end of savePlaylist method
 }; // end of Spotify object
