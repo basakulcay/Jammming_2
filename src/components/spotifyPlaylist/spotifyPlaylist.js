@@ -11,7 +11,9 @@ class SpotifyPlaylist extends React.Component {
         <input defaultValue="Existing Playlist" />
         <div>
           {this.props.spotifyList.map((playlist) => (
-            <p onClick={this.props.onSelect(playlist.id)}>{playlist.id}</p>
+            <p onClick={() => this.props.onSelect(playlist.id)}>
+              {playlist.id}
+            </p>
           ))}
         </div>
       </div>
