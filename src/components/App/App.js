@@ -49,13 +49,16 @@ class App extends React.Component {
   };
 
   selectPlaylist = (id) => {
-    Spotify.getPlaylistTracks(id).then((playlist) => {
-      console.log("appJs select function", playlist);
-      this.setState({
-        playlistName: playlist.name,
-        selectedPlaylistTracks: playlist.tracks,
+    Spotify.getPlaylistTracks(id)
+      .then((playlist) => {
+        console.log("appJs select function", playlist);
+        this.setState({
+          selectedPlaylistTracks: playlist.items,
+        });
+      })
+      .catch((err) => {
+        return;
       });
-    });
     //retrive the tracks of selected playlist
     //update the state of the retrived playlist
   };
@@ -102,7 +105,7 @@ class App extends React.Component {
                 onSelect={this.selectPlaylist}
               />
               <PlaylistTracks
-                selectedPlaylistTracks={this.selectedPlaylistTracks}
+                selectedPlaylistTracks={this.state.selectedPlaylistTracks}
               />
             </div>
           </div>

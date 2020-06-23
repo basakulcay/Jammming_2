@@ -52,7 +52,7 @@ const Spotify = {
     const headers = { Authorization: `Bearer ${accessToken}` };
     try {
       const res = await axios.get(
-        `https://api.spotify.com/v1/me/playlists/${id}/tracks`,
+        `https://api.spotify.com/v1/playlists/${id}/tracks`,
         { headers: headers },
       );
       console.log("This is the playlist tracks", res.data);
